@@ -1,0 +1,9 @@
+<div class="progress-outer">
+  <div *ngIf="progress !== undefined" class="progress-inner" [style.width]="progress + '%'">
+    {{progress}}%
+  </div>
+  <div *ngIf="max !== undefined && now !== undefined" class="progress-inner" [style.width]="((now * 100) /max).toFixed(0) + '%'">
+    {{now}} / {{max}}
+  </div>
+
+</div>

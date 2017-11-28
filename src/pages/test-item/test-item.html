@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="pauseTesting()">
+        <ion-icon name="ios-pause"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Чеклист админестратора</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar>
+    <progress-bar [progress]="loadProgress"></progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-select [(ngModel)]="department" okText="Ок" cancelText="Отменить">
+        <ion-option *ngFor="let o of departmentsTitles">{{o}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <h3>{{check.title}}</h3>
+    <p>{{check.description}}</p>
+  </ion-list>
+  <ion-list>
+    <ion-item *ngIf="tasksArray.length === 0">
+      <p > За эту проверку {{check.max}} бал{{check.max === 1? '': (check.max === 2 || check.max === 3? 'а' : 'ов')}}</p>
+    </ion-item>
+    <ion-item *ngIf="tasksArray.length > 0">
+      <ion-input type="number" [(ngModel)]="check.points"></ion-input>
+      <ion-note item-end >
+        максимум {{check.max}} бал{{check.max === 1? '': (check.max === 2 || check.max === 3? 'а' : 'ов')}}
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="tasksArray.length > 0">
+    <ion-item *ngFor="let n of tasksArray" (click)="showDetail(n)">
+      <ion-icon
+        color="dark"
+        *ngIf="n.completed"
+        name="ios-radio-button-on"
+        item-start
+      ></ion-icon>
+
+      <ion-icon
+        color="{{n.priority === 'low'? 'secondary' : n.priority === 'high'? 'danger' : 'primary'}}"
+        *ngIf="!n.completed"
+        name="ios-radio-button-off"
+        item-start
+      ></ion-icon>
+
+      <h2>{{n.department}}</h2>
+      <p>{{n.note}}</p>
+      <ion-note item-end>
+        <p>{{n.createTime | date:'H:mm'}}</p>
+        <p>{{n.createTime | date:'dd/MM/yy'}}</p>
+      </ion-note>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-buttons end>
+      <button color="danger" *ngIf="tasksArray.length === 0" ion-button icon-end (click)="addTask()"  >
+        Плохо
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    <button color="danger" *ngIf="tasksArray.length !== 0" ion-button icon-end (click)="addTask()"  >
+      Добавить задачу
+        <ion-icon name="md-add"></ion-icon>
+      </button>
+      <button ion-button icon-only *ngIf="tasksArray.length === 0" (click)="skipCheck()" >
+        <ion-icon name="ios-fastforward"></ion-icon>
+      </button>
+      <button color="secondary" *ngIf="tasksArray.length === 0" ion-button icon-end (click)="nextCheck()" >
+        Хорошо
+        <ion-icon name="md-checkmark"></ion-icon>
+      </button>
+    <button color="secondary" *ngIf="tasksArray.length !== 0" ion-button icon-end (click)="failCheck()" >
+      Продолжить
+        <ion-icon name="md-arrow-dropright"></ion-icon>
+      </button>
+  </ion-buttons>
+</ion-footer>

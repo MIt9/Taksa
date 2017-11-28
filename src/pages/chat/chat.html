@@ -1,0 +1,40 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Сообщения</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding #content scrollDownOnLoad="true">
+  <ion-list>
+    <div *ngFor="let m of messages" class="message" [ngClass]="{'owner-message': m.user === owner, 'other-message': m.user !== owner}">
+      <div class="message-holder">
+        <h6 *ngIf="m.user === owner" side="right"><span>Вы</span></h6>
+        <h6 *ngIf="m.user !== owner"><span>{{m.user}}</span></h6>
+        <p>{{m.text}}</p>
+        <p>{{m.createTime | date:'H:mm dd/MM/yy'}}</p>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-10>
+        <ion-input  [(ngModel)]="text"></ion-input>
+      </ion-col>
+      <ion-col col-2>
+        <button ion-button icon-only (click)="sendMessage()" >
+          <ion-icon name="ios-log-out"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

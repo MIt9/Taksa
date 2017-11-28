@@ -1,0 +1,157 @@
+<!--
+  Generated template for the CreateTaskPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+
+    <ion-title>Создать задачу</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="save()">
+        <ion-icon name="md-checkmark"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label color="primary" stacked>Раздел</ion-label>
+      <ion-input type="department" placeholder="Раздел" [(ngModel)]="task.department"></ion-input>
+      <div *ngIf="task.department.length < 2">Отдел должен быть больше 2 букв</div>
+      <ion-note item-end *ngIf="task.department.length < 2">
+        <ion-icon color="danger" name="md-warning"></ion-icon>
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>Название задачи</ion-label>
+      <ion-input type="check" placeholder="Название задачи коротко" [(ngModel)]="task.check"></ion-input>
+      <ion-note item-end *ngIf="task.check.length < 2">
+        <ion-icon  color="danger" name="md-warning"></ion-icon>
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>Описание</ion-label>
+      <ion-input type="note" placeholder="Замеченая проблема" [(ngModel)]="task.note"></ion-input>
+      <ion-note item-end *ngIf="task.note.length < 2">
+        <ion-icon color="danger" name="md-warning"></ion-icon>
+      </ion-note>
+    </ion-item>
+    <div class="item-md" [ngClass]="{filled: task.assigned !== ''}">
+      <ion-label color="primary" stacked>Ответственый</ion-label>
+      <ng2-completer
+        placeholder="Ответственый за задачу"
+        [(ngModel)]="task.assigned"
+        [datasource]="users"
+        [ngClass]="{'warning':task.assigned.length < 2}"
+        [minSearchLength]="0">
+      </ng2-completer>
+      <ion-note item-end *ngIf="task.assigned.length < 2">
+        <ion-icon color="danger"name="md-warning"></ion-icon>
+      </ion-note>
+    </div>
+    <div class="item-md">
+      <ion-label color="primary" stacked>Приоритет</ion-label>
+      <ion-segment [(ngModel)]="task.priority">
+        <ion-segment-button value="low">
+          Низкая
+        </ion-segment-button>
+        <ion-segment-button value="medium">
+          Средняя
+        </ion-segment-button>
+        <ion-segment-button value="high">
+          Высокая
+        </ion-segment-button>
+      </ion-segment>
+      <ion-label color="primary" stacked>Проверить через</ion-label>
+      <ion-segment [(ngModel)]="task.remindTime">
+        <ion-segment-button value="15">
+          15
+        </ion-segment-button>
+        <ion-segment-button value="30">
+          30
+        </ion-segment-button>
+        <ion-segment-button value="60">
+          60
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <ion-item>
+      <ion-note item-end *ngIf="task.images.length > 0 || task.files.length > 0">
+        <button *ngIf="task.images.length > 0" icon-only ion-button (click)="imageTrigger()" icon-start>
+          <ion-icon name="ios-image"></ion-icon>
+        </button>
+        <button *ngIf="task.files.length > 0" icon-only ion-button (click)="attachTrigger()" icon-start>
+          <ion-icon name="md-attach"></ion-icon>
+        </button>
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+
+  <ion-list *ngIf="readyToUploadPhotos.length > 0">
+    <ion-item *ngFor="let file of readyToUploadPhotos; let i = index">
+      <img src="{{imgUrl + file}}" alt="">
+      <div>
+        <button ion-button icon-end (click)="removeFile(i, readyToUploadPhotos)">
+          {{file}}
+          <ion-icon name="md-close"></ion-icon>
+        </button>
+      </div>
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="task.images.length > 0 && showImages">
+    <ion-item *ngFor="let file of task.images; let i = index">
+      <img src="{{imgUrl + file}}" alt="">
+      <div>
+        <button ion-button icon-end (click)="removeFile(i, task.images)">
+          {{file}}
+          <ion-icon name="md-close"></ion-icon>
+        </button>
+      </div>
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="readyToUploadFiles.length > 0">
+    <ion-item *ngFor="let file of readyToUploadFiles; let i = index">
+      <button ion-button icon-end (click)="removeFile(i, readyToUploadFiles)">
+        {{file}}
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="task.files.length > 0 && showFiles">
+    <ion-item *ngFor="let file of task.files; let i = index">
+      <button ion-button icon-end (click)="removeFile(i, task.files)">
+        {{file}}
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-buttons end>
+    <input style="display:none" type="file" #fileInput (change)="updateFileList($event, 'file')"/>
+    <button ion-button icon-end (click)="addFile()">
+      Добавить файл
+      <ion-icon name="md-attach"></ion-icon>
+    </button>
+    <input
+      style="display:none"
+      type="file" #photoInput
+      accept="image/x-png,image/gif,image/jpeg"
+      (change)="updateFileList($event, 'photo')"/>
+    <button ion-button icon-end (click)="addPhoto()">
+      Добавить фото
+      <ion-icon name="ios-image"></ion-icon>
+    </button>
+  </ion-buttons>
+</ion-footer>

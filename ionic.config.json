@@ -1,0 +1,8 @@
+{
+  "name": "Taksa",
+  "app_id": "Taksa-001",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

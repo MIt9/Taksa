@@ -1,0 +1,25 @@
+
+page-create-task {
+  ng2-completer{
+    input{
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid lightgrey;
+      line-height: 2em;
+    }
+    &.warning{
+      &>div{
+        width:92%;
+        display: inline-block;
+      }
+    }
+  }
+  .filled{
+    ng2-completer{
+      input{
+        border-width: 2px;
+        border-color: #32db64;
+      }
+    }
+  }
+}

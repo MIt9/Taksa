@@ -1,0 +1,48 @@
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <div></div>
+    </ion-list-header>
+    <ion-list-header>
+      <progress-bar [max]="items.length" [now]="completedTask"></progress-bar>
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let n of items;let i = index" #slide>
+      <ion-item (click)="showDetail(n)">
+        <ion-icon
+          color="dark"
+          *ngIf="n.completed"
+          name="ios-radio-button-on"
+          item-start
+        ></ion-icon>
+
+        <ion-icon
+          color="{{n.priority === 'low'? 'secondary' : n.priority === 'high'? 'danger' : 'primary'}}"
+          *ngIf="!n.completed"
+          name="ios-radio-button-off"
+          item-start
+        ></ion-icon>
+
+        <h2>{{n.check}}</h2>
+        <p>{{n.note}}</p>
+        <ion-note item-end>
+          <p>{{n.createTime | date:'H:mm'}}</p>
+          <p>{{n.createTime | date:'dd.MM.yy'}}</p>
+        </ion-note>
+      </ion-item>
+      <ion-item-options side="right" *ngIf="n.createdBy === owner">
+        <button ion-button color="primary" expandable (click)="editTask(slide, n)">
+          <ion-icon name="md-create" class="expand-hide"></ion-icon>
+          <div class="expand-hide">Править</div>
+        </button>
+      </ion-item-options>
+      <ion-item-options side="left">
+        <button ion-button color="primary" expandable (click)="confirmExecution(slide, n)">
+          <ion-icon *ngIf="!n.completed" name="ios-checkmark-circle-outline" class="expand-hide"></ion-icon>
+          <ion-icon *ngIf="n.completed" name="ios-close" class="expand-hide"></ion-icon>
+          <div class="expand-hide">{{n.completed? 'В роботу' : 'Выполнено'}}</div>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+</ion-list>
+</ion-content>

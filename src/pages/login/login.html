@@ -1,0 +1,32 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>
+      Такса
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <h3 margin-left>Авторизация</h3>
+  <p margin>Пожалуйста воспользуйтесь данными вашей корпоротивной записи</p>
+
+  <ion-list no-margin>
+    <ion-item>
+      <ion-label stacked color="primary">Логин</ion-label>
+      <ion-input [(ngModel)]="user.name" ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked color="primary">Пароль</ion-label>
+      <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <div padding>
+    <button ion-button block (click)="login()">Вход</button>
+  </div>
+
+</ion-content>

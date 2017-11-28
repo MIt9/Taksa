@@ -1,0 +1,67 @@
+<ion-menu id="main" [content]="content">
+
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Главное меню</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list *ngIf="loggedIn">
+      <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        {{p.title}}
+      </button>
+      <button ion-item (click)="logOut()">
+        <ion-label color="primary">Выход из аккаунта</ion-label>
+      </button>
+
+      <button ion-item menuToggle>
+        Скрыть меню
+      </button>
+    </ion-list>
+    <ion-list *ngIf="!loggedIn">
+      <ion-list-header>
+        Пожалуйста авторизируйтесь
+      </ion-list-header>
+      <button ion-item (click)="openPage(loggedOutPages)">
+        <ion-label color="primary">{{loggedOutPages.title}}</ion-label>
+      </button>
+      <button ion-item menuToggle>
+        Скрыть меню
+      </button>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<ion-menu id="test" [content]="content">
+
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Чеклист админестратора</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <button ion-item (click)="openPage(pages[0])">
+        <ion-label color="primary">Главная</ion-label>
+      </button>
+    </ion-list>
+
+    <ion-list *ngFor="let p of testList">
+      <ion-list-header>
+        {{p.title}}
+      </ion-list-header>
+      <ion-item *ngFor="let i of p.checks; let n = index" (click)="openItem(p.title, n)">
+        <ion-icon color="secondary" *ngIf="i.status" name="ios-checkmark-circle" item-start></ion-icon>
+        <ion-icon color="danger" *ngIf="i.status === false" name="ios-alert" item-start></ion-icon>
+        <ion-label>{{i.title}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

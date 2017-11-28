@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Детали</ion-title>
+    <ion-buttons end>
+      <button *ngIf="task.createdBy === owner" ion-button icon-only (click)="edit()">
+        <ion-icon name="md-create"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content class="{{task.priority}}">
+    <ion-list>
+      <ion-item>
+      <h5>Проверка</h5>
+      <p>{{task.check}}</p>
+    </ion-item>
+      <ion-item *ngIf="firstImgUrl !== ''">
+        <div
+          class="img-holder"
+          (click)="showImages()"
+          [ngStyle]="{'background-image': firstImgUrl}"
+        >
+        </div>
+      </ion-item>
+      <ion-item>
+        <h6>Создан</h6>
+        <p>{{task.createdBy}}</p>
+        <ion-note item-end>
+          <p>{{task.createTime | date:'H:mm'}}</p>
+          <p>{{task.createTime | date:'dd.MM.yy'}}</p>
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <h6>Ответственый</h6>
+        <p>{{task.assigned}}</p>
+      </ion-item>
+      <ion-item>
+        <h6>Описание</h6>
+        <p>{{task.note}}</p>
+      </ion-item>
+      <ion-item>
+        <h6>Раздел</h6>
+        <p>{{task.department}}</p>
+        <ion-note item-end *ngIf="task.files.length > 0">
+          <button icon-only ion-button (click)="attachTrigger()" icon-start>
+            <ion-icon name="md-attach"></ion-icon>
+          </button>
+        </ion-note>
+      </ion-item>
+
+
+    </ion-list>
+  <ion-list *ngIf="showAttach" >
+    <ion-item *ngFor="let file of task.files">
+    <a href="{{imgUrl + file}}" download="true">{{file}}</a>
+  </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-buttons end>
+    <button *ngIf="phone !== ''" ion-button (click)="makeCall()" icon-only>
+      <ion-icon name="ios-call"></ion-icon>
+    </button>
+    <button ion-button (click)="openChat()" icon-only>
+      <ion-icon name="md-chatboxes"></ion-icon>
+    </button>
+    <button *ngIf="task.completed === false" color="secondary" ion-button (click)="confirmExecution()" icon-end>
+      Выполнено
+      <ion-icon name="md-checkmark"></ion-icon>
+    </button>
+    <button *ngIf="task.completed === true" color="danger" ion-button (click)="confirmExecution()" icon-end>
+      Вернуть в работу
+      <ion-icon name="md-close"></ion-icon>
+    </button>
+    <button ion-button (click)="dismiss()" icon-end>
+      Закрыть
+      <ion-icon name="md-close"></ion-icon>
+    </button>
+  </ion-buttons>
+</ion-footer>

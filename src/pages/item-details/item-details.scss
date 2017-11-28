@@ -1,0 +1,36 @@
+page-item-details {
+  background: white;
+  ion-content{
+    border-left: 4px solid;
+    position: relative;
+    &.low{
+      border-color:#32db64;
+    }
+    &.high{
+      border-color:#f53d3d;
+    }
+    &.normal{
+      border-color:#488aff;
+    }
+  }
+  .img-holder{
+    height:250px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position:relative;
+    &:after{
+      display: block;
+      width:3%;
+      text-align: center;
+      content:'...';
+      color: lightgray;
+      font-size: 2em;
+      position:absolute;
+      bottom: 0;
+      right:47%;
+
+    }
+  }
+
+}
